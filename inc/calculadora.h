@@ -38,9 +38,16 @@ extern "C" {
 
 /* === Public data type declarations =========================================================== */
 
-/* === Public variable declarations ============================================================ */
+typedef struct operacion_s * operacion_t;
+typedef struct calculadora_s * calculadora_t;
+typedef int (*funciont_t)(int, int);
 
-/* === Public function declarations ============================================================ */
+/* === Public variable declarations ============================================================*/
+
+/* === Public function declarations ============================================================*/
+
+calculadora_t CrearCalculadora(void);
+bool AgregarOperacion(calculadora_t calculadora, char operador, funciont_t funcion);
 
 /* === End of documentation ==================================================================== */
 

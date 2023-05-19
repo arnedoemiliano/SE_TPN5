@@ -26,14 +26,37 @@ SPDX-License-Identifier: MIT
 /* === Headers files inclusions =============================================================== */
 
 #include "calculadora.h"
+#include "stdbool.h"
+#include "stdlib.h"
 
 /* === Macros definitions ====================================================================== */
 
-/* === Private data type declarations ========================================================== */
+#if !defined(OPERACIONES)
+    #define OPERACIONES 16
+#endif // OPERACIONES
+
+/* === Private data type declarations ==========================================================
+ */
+
+typedef struct operacion_s * operacion_t;
+
+struct operacion_s {
+    char operador;
+    funciont_t funcion;
+    // operacion_t siguiente;
+};
+
+struct calculadora_s {
+    // Arreglo de estructuras del tipo operacion_s
+    struct operacion_s operaciones[OPERACIONES];
+    // operacion_t operaciones;
+};
 
 /* === Private variable declarations =========================================================== */
 
 /* === Private function declarations =========================================================== */
+
+operacion_t BuscarOperacion(calculadora_t calculadora, char coincidencia);
 
 /* === Public variable definitions ============================================================= */
 
@@ -41,10 +64,46 @@ SPDX-License-Identifier: MIT
 
 /* === Private function implementation ========================================================= */
 
+operacion_t BuscarOperacion(calculadora_t calculadora, char operador) {
+
+    operacion_t resultado = NULL;
+
+    for (int i = 0; i < sizeof(struct calculadora_s); i++) {
+        if (calculadora->operaciones[i].operador == operador) {
+            resultado = &calculadora->operaciones[i];
+            break;
+        }
+    }
+
+    return resultado;
+}
+
 /* === Public function implementation ========================================================== */
+
+calculadora_t CrearCalculadora() {
+    calculadora_t resultado = malloc(sizeof(struct calculadora_s));
+    if (resultado) {
+        memset(resultado, 0, sizeof(struct calculadora_s));
+    }
+
+    return resultado;
+}
+
+bool AgregarOperacion(calculadora_t calculadora, char operador, funciont_t funcion) {
+
+    operacion_t operacion = BuscarOperacion(calculadora, 0);
+
+    // Busco que operacion tenga un valor de direccion valido y que la nueva funcion de la calcu-
+    // ladora no se encuentre ya entre sus funciones.
+    if ((operacion) && !BuscarOperacion(calculadora, operador)) {
+
+        operacion->operador = operador;
+        operacion->funcion = funcion;
+    }
+
+    return (operacion != NULL);
+}
 
 /* === End of documentation ==================================================================== */
 
 /** @} End of module definition for doxygen */
-
-
