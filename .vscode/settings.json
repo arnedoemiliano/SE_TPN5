@@ -23,5 +23,8 @@
         ".pytest_cache": true,
         ".coverage": true
     },
-    "C_Cpp.dimInactiveRegions": false
+    "C_Cpp.dimInactiveRegions": false,
+    "files.associations": {
+        "stdlib.h": "c"
+    }
 }

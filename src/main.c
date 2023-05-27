@@ -15,17 +15,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 SPDX-License-Identifier: MIT
 *************************************************************************************************/
 
-/** \brief Brief description of the file
- **
- ** Full file description
- **
- ** \addtogroup name Module denomination
- ** \brief Brief description of the module
+/** \brief Trabajo practico numero 5
+ *
+ ** \addtogroup tp5 TPN5
+ ** \brief
  ** @{ */
 
 /* === Headers files inclusions =============================================================== */
 
 #include "calculadora.h"
+#include "stdio.h"
 
 /* === Macros definitions ====================================================================== */
 
@@ -34,19 +33,71 @@ SPDX-License-Identifier: MIT
 /* === Private variable declarations =========================================================== */
 
 /* === Private function declarations =========================================================== */
-
+int sumar(int a, int b);
+int multiplicar(int a, int b);
+int restar(int a, int b);
 /* === Public variable definitions ============================================================= */
 
 /* === Private variable definitions ============================================================ */
 
 /* === Private function implementation ========================================================= */
 
+int sumar(int a, int b) {
+    return a + b;
+}
+
+int multiplicar(int a, int b) {
+    return a * b;
+}
+
+int restar(int a, int b) {
+    return a - b;
+}
+
 /* === Public function implementation ========================================================== */
 
 int main(void) {
 
-    while (1) {
+    bool flag = false;
+
+    calculadora_t calculadora = CrearCalculadora();
+
+    if (calculadora) {
+        printf("***Se creo exitosamente la calculadora***\n");
+
+    } else {
+        printf("No se pudo crear calculadora");
     }
+
+    flag = AgregarOperacion(calculadora, '+', sumar);
+
+    if (flag) {
+        printf("***Se agregó exitosamente la nueva operacion***\n");
+
+    } else {
+        printf("***No se pudo agregar la operacion***");
+    }
+
+    flag = AgregarOperacion(calculadora, '*', multiplicar);
+
+    if (flag) {
+        printf("***Se agregó exitosamente la nueva operacion***\n");
+
+    } else {
+        printf("***No se pudo agregar la operacion***");
+    }
+
+    flag = AgregarOperacion(calculadora, '-', restar);
+
+    if (flag) {
+        printf("***Se agregó exitosamente la nueva operacion***\n");
+
+    } else {
+        printf("***No se pudo agregar la operacion***");
+    }
+
+    int result = Calcular(calculadora, "9*5");
+    printf("%i\n", result);
 }
 
 /* === End of documentation ==================================================================== */

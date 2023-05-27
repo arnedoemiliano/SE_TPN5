@@ -15,19 +15,18 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 SPDX-License-Identifier: MIT
 *************************************************************************************************/
 
-/** \brief Brief description of the file
+/** \brief Implementacion del modulo 'calculadora'
  **
- ** Full file description
- **
- ** \addtogroup name Module denomination
- ** \brief Brief description of the module
+ ** \addtogroup calculadora Calculadoras
+ ** \brief Modulo para la creacion y asignacion de funciones de una calculadora
  ** @{ */
 
 /* === Headers files inclusions =============================================================== */
 
-#include "calculadora.h"
-#include "stdbool.h"
-#include "stdlib.h"
+#include "./calculadora.h"
+
+#include "string.h"
+#include "stdio.h"
 
 /* === Macros definitions ====================================================================== */
 
@@ -35,28 +34,25 @@ SPDX-License-Identifier: MIT
     #define OPERACIONES 16
 #endif // OPERACIONES
 
-/* === Private data type declarations ==========================================================
- */
+/* === Private data type declarations ========================================================== */
 
 typedef struct operacion_s * operacion_t;
 
 struct operacion_s {
     char operador;
     funciont_t funcion;
-    // operacion_t siguiente;
+    operacion_t siguiente;
 };
 
 struct calculadora_s {
-    // Arreglo de estructuras del tipo operacion_s
-    struct operacion_s operaciones[OPERACIONES];
-    // operacion_t operaciones;
+    operacion_t operaciones;
 };
 
 /* === Private variable declarations =========================================================== */
 
 /* === Private function declarations =========================================================== */
 
-operacion_t BuscarOperacion(calculadora_t calculadora, char coincidencia);
+operacion_t BuscarOperacion(calculadora_t calculadora, char operador);
 
 /* === Public variable definitions ============================================================= */
 
@@ -64,14 +60,38 @@ operacion_t BuscarOperacion(calculadora_t calculadora, char coincidencia);
 
 /* === Private function implementation ========================================================= */
 
+// Devuelve un puntero a donde haya un operacion_s con operador = param operador
 operacion_t BuscarOperacion(calculadora_t calculadora, char operador) {
 
     operacion_t resultado = NULL;
 
-    for (int i = 0; i < sizeof(struct calculadora_s); i++) {
-        if (calculadora->operaciones[i].operador == operador) {
-            resultado = &calculadora->operaciones[i];
-            break;
+    // for (int i = 0; i < count; i++)
+    // El for comienza desde la operacion a la que apunta actualmente la calculadora. Sigue en el
+    // ciclo mientras el miembro siguiente de la estructura operacion_s a la que apunta operaciones
+    // sea distinto de NULL.Y por cada iteracion operaciones de calculadora toma el valor de
+    // siguiente de la estrucutra operacion_s a la que apunta. Si el miembro operador de operacion_s
+    // apuntado por actual coincide con el param. operador, retorna un puntero a ese operacion_s en
+    // el que hubo coincidencia.
+
+    // indica que no hay operaciones guardadas por que operaciones solo puede apuntar a un
+    // operacion_s ocupado
+    if (calculadora->operaciones == NULL) {
+        printf("***La calculadora no tiene ninguna operacion guardada***\n");
+        return NULL;
+    } else {
+
+        // El primer operacion_s tiene siguiente=NULL por como está hecho. Por eso falla al entrar
+        // al for. Se agrega un if para el caso de que haya una sola operacion guardada
+        // en ese caso no busca nada y retorna a lo que apunta calculadora->operaciones
+
+        for (operacion_t actual = calculadora->operaciones; actual->siguiente != NULL;
+             actual = actual->siguiente) {
+
+            if (actual->operador == operador) {
+
+                resultado = actual;
+                break;
+            }
         }
     }
 
@@ -85,23 +105,50 @@ calculadora_t CrearCalculadora() {
     if (resultado) {
         memset(resultado, 0, sizeof(struct calculadora_s));
     }
-
+    /******************************/
+    resultado->operaciones = NULL;
     return resultado;
 }
 
 bool AgregarOperacion(calculadora_t calculadora, char operador, funciont_t funcion) {
+    operacion_t operacion = malloc(sizeof(struct operacion_s));
 
-    operacion_t operacion = BuscarOperacion(calculadora, 0);
-
-    // Busco que operacion tenga un valor de direccion valido y que la nueva funcion de la calcu-
-    // ladora no se encuentre ya entre sus funciones.
+    // Si operacion tiene una direccion valida y el parametro operador, no se
+    // agregó antes:
     if ((operacion) && !BuscarOperacion(calculadora, operador)) {
-
         operacion->operador = operador;
         operacion->funcion = funcion;
+        // siguiente apunta a la operacion que apuntaba operaciones (operacion vieja)
+        operacion->siguiente = calculadora->operaciones;
+        // operaciones apunta a la operacion mas reciente
+        // duda: cuando se agrege un operacion por primera vez, entonces siguiente
+        // tendrá un valor NULL
+        calculadora->operaciones = operacion;
     }
 
     return (operacion != NULL);
+}
+
+int Calcular(calculadora_t calculadora, char * cadena) {
+    int a, b;
+    char operador;
+    int resultado = 0;
+
+    for (int i = 0; i < strlen(cadena); i++) {
+        if (cadena[i] < '0') {
+            operador = cadena[i];
+            a = atoi(cadena);
+            b = atoi(cadena + i + 1);
+            break;
+        }
+    }
+    operacion_t operacion = BuscarOperacion(calculadora, operador);
+    if (operacion) {
+        resultado = operacion->funcion(a, b);
+    } else {
+        printf("***Fallo al encontrar la operacion solicitada***\n");
+    }
+    return resultado;
 }
 
 /* === End of documentation ==================================================================== */

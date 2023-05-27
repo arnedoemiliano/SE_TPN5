@@ -18,15 +18,16 @@ SPDX-License-Identifier: MIT
 #ifndef CALCULADORA_H
 #define CALCULADORA_H
 
-/** \brief Brief description of the file
+/** \brief Declaraciones publicas del modulo 'calculadora'
  **
- ** Full file description
- **
- ** \addtogroup name Module denomination
- ** \brief Brief description of the module
+ ** \addtogroup calculadora Calculadoras
+ ** \brief Modulo para la creacion y asignacion de funciones de una calculadora
  ** @{ */
 
 /* === Headers files inclusions ================================================================ */
+
+#include "stdbool.h"
+#include "stdlib.h"
 
 /* === Cabecera C++ ============================================================================ */
 
@@ -38,7 +39,6 @@ extern "C" {
 
 /* === Public data type declarations =========================================================== */
 
-typedef struct operacion_s * operacion_t;
 typedef struct calculadora_s * calculadora_t;
 typedef int (*funciont_t)(int, int);
 
@@ -48,6 +48,7 @@ typedef int (*funciont_t)(int, int);
 
 calculadora_t CrearCalculadora(void);
 bool AgregarOperacion(calculadora_t calculadora, char operador, funciont_t funcion);
+int Calcular(calculadora_t calculadora, char * cadena);
 
 /* === End of documentation ==================================================================== */
 

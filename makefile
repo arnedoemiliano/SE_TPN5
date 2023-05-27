@@ -1,4 +1,5 @@
 SRC_DIR = ./src
+INC_DIR = ./inc
 OUT_DIR = ./build
 OBJ_DIR = $(OUT_DIR)/obj
 BIN_DIR = $(OUT_DIR)/bin
@@ -20,7 +21,7 @@ $(BIN_DIR): $(OUT_DIR)
 	mkdir $(BIN_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(OBJ_DIR)
-	gcc -c $< -o $@
+	gcc -c $< -I$(INC_DIR) -o $@ # Agregado -I$(INC_DIR) para incluir la carpeta "inc"
 
 all: $(OBJ_FILES) $(BIN_DIR)
 	gcc -o $(BIN_DIR)/app.elf $(OBJ_FILES)
