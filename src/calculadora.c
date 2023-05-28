@@ -87,8 +87,9 @@ operacion_t BuscarOperacion(calculadora_t calculadora, char operador) {
         printf("***La calculadora no tiene ninguna operacion guardada***\n");
         return NULL;
     } else {
-
-        for (operacion_t actual = calculadora->operaciones; actual->siguiente != NULL;
+        // Se usa actual != NULL como condicion de entrada al for para que pueda buscar la primera
+        // operacion que tendría un siguiente = NULL
+        for (operacion_t actual = calculadora->operaciones; (actual != NULL);
              actual = actual->siguiente) {
 
             if (actual->operador == operador) {
@@ -97,12 +98,26 @@ operacion_t BuscarOperacion(calculadora_t calculadora, char operador) {
                 break;
             }
         }
-    }
 
+        /*
+         operacion_t actual = calculadora->operaciones;
+         do {
+             if (actual->operador == operador) {
+
+                 resultado = actual;
+                 break;
+             }
+             actual->siguiente = o
+
+         } while (actual->siguiente != NULL);
+     }
+     */
+    }
     return resultado;
 }
 
-/* === Public function implementation ========================================================== */
+/* === Public function implementation ==========================================================
+ */
 
 calculadora_t CrearCalculadora() {
     calculadora_t resultado = malloc(sizeof(struct calculadora_s));
@@ -155,6 +170,7 @@ int Calcular(calculadora_t calculadora, char * cadena) {
     return resultado;
 }
 
-/* === End of documentation ==================================================================== */
+/* === End of documentation ====================================================================
+ */
 
 /** @} End of module definition for doxygen */

@@ -96,7 +96,13 @@ int main(void) {
         printf("***No se pudo agregar la operacion***");
     }
 
-    int result = Calcular(calculadora, "9*5");
+    int result = Calcular(calculadora, "9+5");
+    printf("%i\n", result);
+
+    result = Calcular(calculadora, "9*5");
+    printf("%i\n", result);
+
+    result = Calcular(calculadora, "9-5");
     printf("%i\n", result);
 }
 
