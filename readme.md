@@ -8,7 +8,7 @@ Usar el programa [make](https://www.gnu.org/software/make/) para compilar y gene
 1. Clonar el repositorio desde GitHub:
 
     ```bash
-    git clone https://github.com/arnedoemiliano/SE_TPN3.git
+    git clone https://github.com/arnedoemiliano/SE_TPN5.git
     ```
 2. Acceder a la ubicacion del proyecto:
      ```bash
