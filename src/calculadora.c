@@ -38,14 +38,22 @@ SPDX-License-Identifier: MIT
 
 typedef struct operacion_s * operacion_t;
 
+/**
+ * @brief estructura de un objeto 'operacion'
+ *
+ */
 struct operacion_s {
-    char operador;
-    funciont_t funcion;
-    operacion_t siguiente;
+    char operador;         /**< Operador de la operación */
+    funciont_t funcion;    /**< Puntero a la funcion que ejecuta la operación */
+    operacion_t siguiente; /**< Puntero a la siguiente operación */
 };
 
+/**
+ * @brief estructura de un objeto 'calculadora'
+ *
+ */
 struct calculadora_s {
-    operacion_t operaciones;
+    operacion_t operaciones; /**< puntero a la operación actual */
 };
 
 /* === Private variable declarations =========================================================== */
@@ -79,10 +87,6 @@ operacion_t BuscarOperacion(calculadora_t calculadora, char operador) {
         printf("***La calculadora no tiene ninguna operacion guardada***\n");
         return NULL;
     } else {
-
-        // El primer operacion_s tiene siguiente=NULL por como está hecho. Por eso falla al entrar
-        // al for. Se agrega un if para el caso de que haya una sola operacion guardada
-        // en ese caso no busca nada y retorna a lo que apunta calculadora->operaciones
 
         for (operacion_t actual = calculadora->operaciones; actual->siguiente != NULL;
              actual = actual->siguiente) {
